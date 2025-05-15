@@ -1,14 +1,3 @@
-## Authors
-- Sy-Tuyen Ho¹*
-- Koh Jun Hao¹*
-- Ngoc-Bao Nguyen¹*
-- Alexander Binder²
-- Ngai-Man Cheung¹
-
-¹ Singapore University of Technology and Design (SUTD)  
-² Leipzig University  
-\* Equal contribution
-
 ## Overview
 This repository contains the supplementary code for our research on Model Inversion (MI) evaluation methods. We propose a novel framework for assessing MI attacks using Machine Learning Language Models (MLLMs) and demonstrate the limitations of conventional MI evaluation approaches.
 
