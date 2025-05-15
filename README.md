@@ -3,7 +3,7 @@ This repository contains the supplementary code for our research on Model Invers
 
 ## Project Structure
 
-Download AttackSamples from here and extract. 
+Download AttackSamples from [here](https://sutdapac-my.sharepoint.com/:u:/g/personal/hosy_tuyen_sutd_edu_sg/EcoyMY5RYDdBl_Uj7ZfWvTUBa5cDKRUPfIoUL9NLp3WMjA?e=tAD38Q) and extract. 
 
 ```
 .
