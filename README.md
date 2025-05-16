@@ -59,6 +59,6 @@ pip install pathlib
 3. Follow the step-by-step instructions in `gemini_evaluation.ipynb` for the evaluation
 
 
-## (Optional) Additional Analysis
+## (Optional) Additional Analysis to reproduce results in Tab. 3 in the main paper.
 We provide implementation to investigate the limitations of common standard MI evaluation frameworks in `analysis.ipynb`. 
 
