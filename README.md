@@ -7,18 +7,22 @@ Download AttackSamples from [here](https://sutdapac-my.sharepoint.com/:u:/g/pers
 
 ```
 .
-├── AttackSamples/          # Contains reconstructed images from 26 MI attack setups
-│   └── CelebA/
+├── AttackSamples/                         # Contains reconstructed images from 26 MI attack setups
+│   └── CelebA/                            # D_priv
+|       ├── private-data
+|       |      ├── 0/                      # Class 0 private images for D_priv (e.g., Celeb A)
+│       |      ├── 1/                      # Class 1 private images for D_priv (e.g., Celeb A)
+│       |      └── 2/                      # Class 2 private images for D_priv (e.g., Celeb A)
 │       └── KEDMI/
 │           └── FFHQ/
 │               └── FaceNet64/
 │                   └── all-images/
-│                       ├── 0/     # Class 0 reconstructed images
-│                       ├── 1/     # Class 1 reconstructed images
-│                       └── 2/     # Class 2 reconstructed images
-├── utility.py              # Core utilities for image processing and evaluation
-├── gemini_evaluation.ipynb # MLLM-based evaluation implementation
-└── analysis.ipynb          # Analysis of traditional MI evaluation limitations
+│                       ├── 0/             # Class 0 reconstructed images
+│                       ├── 1/             # Class 1 reconstructed images
+│                       └── 2/             # Class 2 reconstructed images
+├── utility.py                             # Core utilities for image processing and evaluation
+├── gemini_evaluation.ipynb                # MLLM-based evaluation implementation
+└── analysis.ipynb                         # Analysis of traditional MI evaluation limitations
 ```
 
 ## Environment Setup
