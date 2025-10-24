@@ -1,9 +1,11 @@
 ## Overview
-This repository contains the supplementary code for our research on Model Inversion (MI) evaluation methods. We propose a novel framework for assessing MI attacks using Machine Learning Language Models (MLLMs) and demonstrate the limitations of conventional MI evaluation approaches.
+Official Code for [Revisiting Model Inversion Evaluation: From Misleading Standards to Reliable Privacy Assessment](https://arxiv.org/abs/2505.03519)
+
+We discovered that most Model Inversion (MI) attack evaluations are misleading. The standard framework often counts Type-I adversarial examples—images that don’t actually resemble private data—as “successful” reconstructions. This means many reported privacy risks are overestimated. To fix this, we introduce a new MLLM-based evaluation framework using Multimodal LLMs for more reliable, task-agnostic assessment. Re-evaluating 26 MI attack setups, we find inflated success rates across the board—real privacy leakage is much lower than claimed. Our work redefines how MI attacks should be evaluated and sets a new benchmark for robust privacy research.
 
 ## Project Structure
 
-Download AttackSamples from [here](https://sutdapac-my.sharepoint.com/:u:/g/personal/hosy_tuyen_sutd_edu_sg/EcoyMY5RYDdBl_Uj7ZfWvTUBa5cDKRUPfIoUL9NLp3WMjA?e=tAD38Q) and extract. 
+Download AttackSamples from [here](https://www.kaggle.com/datasets/hosytuyen/mi-reconstruction-collection) and extract. 
 
 ```
 .
