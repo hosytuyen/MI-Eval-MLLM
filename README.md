@@ -1,7 +1,7 @@
 ## Overview
 Official Code for [Revisiting Model Inversion Evaluation: From Misleading Standards to Reliable Privacy Assessment](https://arxiv.org/abs/2505.03519)
 
-We discovered that most Model Inversion (MI) attack evaluations are misleading. The standard framework often counts Type-I adversarial examples—images that don’t actually resemble private data—as “successful” reconstructions. This means many reported privacy risks are overestimated. To fix this, we introduce a new MLLM-based evaluation framework using Multimodal LLMs for more reliable, task-agnostic assessment. Re-evaluating 26 MI attack setups, we find inflated success rates across the board—real privacy leakage is much lower than claimed. Our work redefines how MI attacks should be evaluated and sets a new benchmark for robust privacy research.
+We discovered that the most widely used Model Inversion (MI) attack evaluations framework are misleading. The standard framework often counts Type-I adversarial examples—images that don’t actually resemble private data as “successful” reconstructions. To fix this, we introduce a new MLLM-based evaluation framework using Multimodal LLMs for more reliable, task-agnostic assessment. Re-evaluating 27 MI attack setups, we find inflated success rates across the board—real privacy leakage is much lower than claimed. Our work redefines how MI attacks should be evaluated and sets a new benchmark for robust privacy research.
 
 ## Project Structure
 
