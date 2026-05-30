@@ -1,8 +1,24 @@
-# Revisiting Model Inversion Evaluation: From Misleading Standards to Reliable Privacy Assessment
+<h1 align="center">FMLLM Evaluation Framework for Model Inversion Attack</h1>
 
-**CVPR 2026 Findings**
+<p align="center">
+    <b>Revisiting Model Inversion Evaluation:</b><br>
+<b>From Misleading Standards to Reliable Privacy Assessment (CVPR 2026 Findings)</b>
+</p>
 
-[Paper](https://arxiv.org/abs/2505.03519) | [Project](https://hosytuyen.github.io/projects/FMLLM/index.html) | [Dataset](https://huggingface.co/datasets/hosytuyen/MI-Reconstruction-Collection) | [Code](https://github.com/hosytuyen/MI-Eval-MLLM)
+<p align="center">
+  <a href="https://arxiv.org/abs/2505.03519">
+    <img src="https://img.shields.io/badge/Paper-arXiv-b31b1b.svg" alt="Paper">
+  </a>
+  <a href="https://hosytuyen.github.io/projects/FMLLM/index.html">
+    <img src="https://img.shields.io/badge/Code-GitHub-181717.svg" alt="Code">
+  </a>
+  <a href="https://huggingface.co/datasets/hosytuyen/MI-Reconstruction-Collection">
+    <img src="https://img.shields.io/badge/Dataset-HuggingFace-ffcc4d.svg" alt="Dataset">
+  </a>
+  <a href="https://github.com/hosytuyen/MI-Eval-MLLM">
+    <img src="https://img.shields.io/badge/Project-Page-2ea44f.svg" alt="Project">
+  </a>
+</p>
 
 ## Overview
 
