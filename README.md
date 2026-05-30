@@ -1,28 +1,62 @@
-## Official Implementation of FMLLM (CVPR 2026 Findings)
+# Revisiting Model Inversion Evaluation: From Misleading Standards to Reliable Privacy Assessment
 
-**TL;DR:** Current model inversion evaluation framework is misleading, with up to 90% false positives. Our proposed multimodal evaluation framework FMLLM mitigates this.
+**CVPR 2026 Findings**
 
-**Abstract:** We include the supplementary code for our research on Model Inversion (MI) evaluation methods. We propose a novel framework for assessing MI attacks using Machine Learning Language Models (MLLMs) and demonstrate the limitations of conventional MI evaluation approaches.
+[Paper](https://arxiv.org/abs/2505.03519) | [Project](https://hosytuyen.github.io/projects/FMLLM/index.html) | [Dataset](https://huggingface.co/datasets/hosytuyen/MI-Reconstruction-Collection) | [Code](https://github.com/hosytuyen/MI-Eval-MLLM)
 
-We include a dataset of comprehensive collection of Model Inversion (MI) attack reconstructions evaluated using our proposed MLLM-based evaluation framework. It contains reconstructed images from SOTA and common MI attacks spanning different private dataset, public dataset, MI attack, and target model T.
+## Overview
+
+Abstract: Model Inversion (MI) attacks aim to reconstruct information from private training data by exploiting access to a target model. Nearly all recent MI studies evaluate attack success using a standard framework that computes attack accuracy through a secondary evaluation model trained on the same private data and task design as the target model.
+
+In this paper, we present the first in-depth analysis of this dominant evaluation framework and reveal a fundamental issue: many reconstructions deemed "successful" are in fact false positives that do not capture the visual identity of the target individual. We show these MI false positives satisfy the same formal conditions as Type I adversarial examples, and demonstrate extremely high false-positive transferability.
+
+To address this, we introduce a new evaluation framework FMLLM based on Multimodal Large Language Models, whose general-purpose visual reasoning avoids the shared-task vulnerability. We reassess 27 MI attack setups and find consistently high false-positive rates under the conventional approach — calling for a reevaluation of progress in MI research.
+
+This repository includes:
+
+- notebook-based code for generating MLLM evaluation queries
+- unified wrappers for Gemini, Qwen-VL-style endpoints, and ChatGPT-based evaluators
+- analysis utilities for comparing FMLLM labels against conventional MI evaluation outputs
+
+
+## Download MI-Reconstruction-Collection
+
+The released reconstruction collection is hosted on Hugging Face:
+
+```bash
+git clone https://huggingface.co/datasets/hosytuyen/MI-Reconstruction-Collection AttackSamples
+```
+
+Alternatively, you can download the dataset manually from the dataset page and place it under `AttackSamples/`.
+
+The downloaded collection should contain MI reconstructions across multiple private datasets, public datasets, attack methods, and target models. The code in this repo expects the dataset to live under `AttackSamples/`.
+
+Each evaluation setup should contain:
+
+- `all-images/`: reconstructed images to evaluate
+- `private-data/`: class-organized reference images used to build `Set B`
+- result CSV files such as `gemini_results_<model>.csv` or `prediction.csv`
+
+Example structure:
+
+```text
+AttackSamples/
+├── Facescrub/
+│   ├── IFGMI/
+│   │   ├── FFHQ/
+│   │   │   └── Resnet18/
+│   │   │       ├── all-images/
+│   │   │       ├── private-data/
+│   │   │       └── ...
+│   │   └── ...
+├── CelebA/
+├── Cifa100/
+└── Stanford_Dogs/
+```
 
 ## Environment Setup
 
-### Using Conda
-```bash
-# Create and activate conda environment
-conda create -n mi-eval python=3.8
-conda activate mi-eval
-
-# MI-Eval-MLLM
-
-Reproducible MLLM-based evaluation for Model Inversion (MI) attacks (CVPR 2026 Findings supplemental code).
-
-Quickstart
-
-1. Clone the repo and download the dataset (Kaggle: https://www.kaggle.com/datasets/hosytuyen/mi-reconstruction-collection) into `AttackSamples/`.
-
-2. Create environment and install dependencies:
+Create a clean environment and install dependencies:
 
 ```bash
 conda create -n mi-eval python=3.9 -y
@@ -30,38 +64,77 @@ conda activate mi-eval
 pip install -r requirements.txt
 ```
 
-Data layout
+The main dependencies are:
 
-Place reconstructed images under `AttackSamples/`.
+- `torch`, `torchvision` for image preprocessing
+- `pillow` for composing evaluation panels
+- `google-generativeai` for Gemini-based evaluation
+- `gradio-client` for Qwen-VL-style remote evaluators
+- `openai<1.0.0` for ChatGPT-based evaluation helpers
+- `pandas` for analysis
 
+## Basic Usage
+
+### Step 1: Create MLLM evaluation queries
+
+Open `evaluation.ipynb` and configure:
+
+- `setup_folder`, for example `AttackSamples/CelebA/PLGMI/CelebA/VGG16`
+- your API key
+- the evaluator model name, for example `gemini-2.0-flash`
+
+The notebook uses `create_concatenated_images_with_labels(...)` in `utility.py` to build evaluation panels where:
+
+- `Image A` is the reconstructed MI sample
+- `Set B` is a small reference set from the candidate private class
+
+The generated query images are written to a `user-study/` directory next to the original `all-images/` folder.
+
+### Step 2: Evaluate the generated queries
+
+After query generation, run the evaluator on the generated images. For example:
+
+```python
+from utility import *
+
+processor = GeminiProcessor(GEMINI_API_KEY, MODEL_NAME)
+evaluate_images_in_directory_unified(
+    directory_path=output_folder,
+    processor=processor,
+    model_name=MODEL_NAME,
+    max_images=10000,
+    output_prefix="gemini",
+)
 ```
-./AttackSamples/                              # Dataset Folder
-├── Facescrub/                              # Private Datasets
-│   ├── IFGMI/                              # MI Attack 
-│       ├── FFHQ/                           # Public dataset
-|       |   |───Resnet18                    # T
-|       |       |────all-images.zip         # Collention of reconstructed images
-|       |       |────gemini_results.csv     # Label
-│       └── MetFaces/
-│
-├── CelebA/
-│   
-│
-└── Stanford_Dogs/
-|
-├── utility.py              # Core utilities for image processing and evaluation
-├── gemini_evaluation.ipynb # MLLM-based evaluation implementation
-└── analysis.ipynb          # Analysis of traditional MI evaluation limitations
+
+This produces a CSV file beside the evaluated folder.
+
+## Analysis
+
+Use `analysis.ipynb` to compare FMLLM ground-truth labels against predictions from conventional MI evaluation pipelines and compute false positive statistics.
+
+Example:
+
+```python
+base_path = "AttackSamples/Cifa100/PPA/Cifar10/Resnet18"
+ground_truth_path = os.path.join(base_path, "gemini_results_gemini-2.0-flash.csv")
+prediction_path = os.path.join(base_path, "prediction.csv")
+
+merged = compute_metrics(ground_truth_path, prediction_path)
 ```
 
-Run evaluation
-
-- Open [gemini_evaluation.ipynb](gemini_evaluation.ipynb) to configure your MLLM API key and run the evaluation.
-- Use helper routines in `utility.py` for batch evaluation and CSV export.
-
-Notebooks
-
-- `gemini_evaluation.ipynb` — MLLM evaluation walkthrough
-- `analysis.ipynb` — experiments and analysis
+This reproduces the core measurement used in the paper: how often the standard evaluation pipeline counts a reconstruction as successful when the MLLM-based evaluation rejects it.
 
 
+## Citation
+
+If you use this repository, please cite:
+
+```bibtex
+@article{ho2025revisiting,
+  title     = {Revisiting Model Inversion Evaluation: From Misleading Standards to Reliable Privacy Assessment},
+  author    = {Ho, Sy-Tuyen and Koh, Jun Hao and Nguyen, Ngoc-Bao and Binder, Alexander and Cheung, Ngai-Man},
+  journal   = {arXiv preprint arXiv:2505.03519},
+  year      = {2025}
+}
+```
